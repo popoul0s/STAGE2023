@@ -1,0 +1,55 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+h1,
+h3 {
+    text-align: center;
+}
+
+h3 {
+    background-color: black;
+    color: white;
+    font-size: 0.9em;
+    margin-bottom: 0px;
+}
+
+.news p {
+    background-color: #CCCCCC;
+    margin-top: 0px;
+}
+
+.news {
+    width: 70%;
+    margin: auto;
+}
+
+a {
+    text-decoration: none;
+    color: blue;
+}
+
+.table-user {
+    border-collapse: collapse;
+    width: 100%;
+    border: 1px solid;
+    text-align: center;
+}
+
+.th-user {
+    background-color: #000000;
+    color: #ffffff;
+    padding: 8px;
+}
+
+.tr-user:nth-child(even) {
+    background-color: #cccccc;
+}
+
+.td-user {
+    border: 1px solid #000000;
+    padding: 8px;
+}
+
+/* npx tailwindcss -i ./style.css -o ./dist/style.css --watch */
