@@ -73,9 +73,10 @@ try {
             break;
 
          case 'register':
-            if (isset($_POST['user']) && isset($_POST['pw']) && isset($_POST['name']) && isset($_POST['firstname'])) {
-               $login = (new Register());
-               $login->register($_POST['user'], $_POST['pw'], $_POST['name'], $_POST['firstname']);
+            if (isset($_POST['user']) && isset($_POST['pw']) && isset($_POST['name']) && isset($_POST['firstname']) && isset($_FILES['pp']) && $_FILES['pp']['error'] > 0 && $_FILES['pp']['type'] != 'image/png' || $_FILES['pp']['type'] != 'image.jpeg') {
+               // $login = (new Register());
+               // $login->register($_POST['user'], $_POST['pw'], $_POST['name'], $_POST['firstname']);
+               var_dump($_FILES['pp']); 
             } else {
                (new Register())->execute();
             }
@@ -96,15 +97,8 @@ try {
             (new Login())->execute();
             break;
 
-         case 'destroysession':
-            session_destroy();
-            (new Homepage())->execute();
-            header('Location:index.php');
-            break;
-
          case 'un_login':
             session_destroy();
-            (new Homepage())->execute();
             header('Location:index.php');
             break;
 
