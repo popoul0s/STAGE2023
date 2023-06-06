@@ -11,7 +11,10 @@ require_once('src/controllers/post.php');
 require_once('src/controllers/login.php');
 require_once('src/controllers/add_post.php');
 require_once('src/controllers/edit_post.php');
+require_once('src/controllers/del_post.php');
+require_once('src/controllers/profile.php');
 
+use Application\Controllers\DelPost\DelPost;
 use Application\Controllers\EditPost\EditPost;
 use Application\Controllers\AddPost\AddPost;
 use Application\Controllers\EditUser\EditUser;
@@ -23,6 +26,7 @@ use Application\Controllers\AddComment\AddComment;
 use Application\Controllers\Homepage\Homepage;
 use Application\Controllers\Post\Post;
 use Application\Controllers\Login\Login;
+use Application\Controllers\Profile\Profile;
 
 
 try {
@@ -47,6 +51,10 @@ try {
             break;
          case 'editPost':
             (new EditPost())->execute($_GET['id'], $_POST['title'], $_POST['content']);
+            break;
+
+         case 'delPost':
+            (new DelPost())->execute($_GET['id']);
             break;
          
          case 'addComment':
@@ -87,9 +95,9 @@ try {
             break;
 
          case 'register':
-            if (isset($_POST['user']) && isset($_POST['pw']) && isset($_POST['name']) && isset($_POST['firstname']) && isset($_FILES['pp']) && $_FILES['pp']['error'] > 0 && $_FILES['pp']['type'] != 'image/png' || $_FILES['pp']['type'] != 'image.jpeg') {
-               // $login = (new Register());
-               // $login->register($_POST['user'], $_POST['pw'], $_POST['name'], $_POST['firstname']);
+            if (isset($_POST['user']) && isset($_POST['pw']) && isset($_POST['name']) && isset($_POST['firstname'])) {
+               $login = (new Register());
+               $login->register($_POST['user'], $_POST['pw'], $_POST['name'], $_POST['firstname']);
                var_dump($_FILES['pp']); 
             } else {
                (new Register())->execute();
@@ -128,8 +136,15 @@ try {
             break;
 
          case 'seeprofile':
-            (new Login())->executeSeeProfile();
+            (new Profile())->executeSeeProfile($_GET['id_user']);
             break;
+         case 'profileredirection':
+            (new Profile())->profileredirection();
+            break;
+         case 'createprofile':
+            (new Profile())->profileadd($_GET['id_user'], $_POST['number'], $_POST['ville'], $_POST['code_postal'], $_POST['adresse'], $_POST['mail'], $_POST['bio']);
+            break;
+         
          default:
             throw new Exception("La page que vous cherchez n'existe pas !!");
       }
