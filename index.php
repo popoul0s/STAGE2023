@@ -9,7 +9,11 @@ require_once('src/controllers/add_comment.php');
 require_once('src/controllers/homepage.php');
 require_once('src/controllers/post.php');
 require_once('src/controllers/login.php');
+require_once('src/controllers/add_post.php');
+require_once('src/controllers/edit_post.php');
 
+use Application\Controllers\EditPost\EditPost;
+use Application\Controllers\AddPost\AddPost;
 use Application\Controllers\EditUser\EditUser;
 use Application\Controllers\GestUser\GestUser;
 use Application\Controllers\Register\Register;
@@ -35,6 +39,16 @@ try {
             }
             break;
 
+         case 'addPost':
+               (new AddPost())->execute($_POST['title'], $_POST['content']);
+            break;
+         case 'editPostredirection':
+            (new EditPost())->editredirection($_GET['id']); 
+            break;
+         case 'editPost':
+            (new EditPost())->execute($_GET['id'], $_POST['title'], $_POST['content']);
+            break;
+         
          case 'addComment':
             if (isset($_GET['id']) && $_GET['id'] > 0) {
                $identifier = $_GET['id'];
