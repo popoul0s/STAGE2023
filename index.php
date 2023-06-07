@@ -144,7 +144,10 @@ try {
          case 'createprofile':
             (new Profile())->profileadd($_GET['id_user'], $_POST['number'], $_POST['ville'], $_POST['code_postal'], $_POST['adresse'], $_POST['mail'], $_POST['bio']);
             break;
-         
+         case 'delprofile':
+            (new Profile())->profileremove($_GET['id_user']);
+            break;
+
          default:
             throw new Exception("La page que vous cherchez n'existe pas !!");
       }
