@@ -147,6 +147,12 @@ try {
          case 'delprofile':
             (new Profile())->profileremove($_GET['id_user']);
             break;
+         case 'editprofileredirection':
+            (new Profile())->editprofileredirection($_GET['id_user']);
+            break;
+         case 'editprofile':
+            (new Profile())->profileedit($_GET['id_user'], $_POST['number'], $_POST['ville'], $_POST['code_postal'], $_POST['adresse'], $_POST['mail'], $_POST['bio']);
+            break;
 
          default:
             throw new Exception("La page que vous cherchez n'existe pas !!");
