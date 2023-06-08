@@ -267,6 +267,11 @@ try {
             }
             break;
 
+            case 'delpp':
+               unlink('uploads/profilepicture_' . $_GET['id_user'] . '.png');
+               header('Location: index.php?action=seeprofile&id_user=' . $_GET['id_user']);
+               break;
+
          default:
             throw new Exception("La page que vous cherchez n'existe pas !!");
       }

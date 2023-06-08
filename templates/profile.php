@@ -39,7 +39,7 @@
                         <div class="flex flex-row pb-8">
                             <div class="basis-2/5">
                                 <label for="adresse" class="font-bold">🔑 Adresse :</label>
-                                <input class="border-b w-64" type="text" name="adresse" required id="adresse" placeholder="X Rue de l'Exemple">
+                                <input class="border-b w-64" type="text" name="adresse" required pattern="([0-9]*) ?([a-zA-Z,\. ]*)$" id="adresse" placeholder="X Rue de l'Exemple">
                             </div>
                             <div class="basis-3/5">
                                 <label for="mail" class="font-bold">✉️ Mail :</label>

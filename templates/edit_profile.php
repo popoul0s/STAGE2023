@@ -52,7 +52,7 @@ SVG LOGO DECONNEXION :
                             <div class="flex flex-row pb-8">
                                 <div class="basis-2/5 ml-12 mr-24">
                                     <label for="adresse" class="font-bold">🔑 Adresse :</label>
-                                    <input class="border-b w-64" type="text" name="adresse" required id="adresse" value="<?= $profile->adresse ?>">
+                                    <input class="border-b w-64" type="text" name="adresse" required id="adresse" pattern="([0-9]*) ?([a-zA-Z,\. ]*)$" value="<?= $profile->adresse ?>">
                                 </div>
                                 <div class="basis-2/5">
                                     <label for="mail" class="font-bold">✉️ Mail :</label>
