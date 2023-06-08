@@ -1,9 +1,8 @@
 <?php
-$title = "Le blog de l'AVBN"; ?>
+$title = "Le blog de GAP"; ?>
 
 <?php ob_start(); ?>
-
-<button type="button" class="py-2 px-5 mb-5 mt-2 text-sm font-medium ml-12 text-white focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700  dark:text-gray-400 dark:border-gray-600"><a href="index.php" class="text-black">Retour aux billets</a></button>
+<a href="index.php?action=gest_user" class="text-black"><button type="button" class="py-2 px-5 mb-5 mt-2 text-sm font-medium ml-12 text-black focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:text-black">Retour à la gestion des utilisateurs</button></a>
 <div class="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden md:max-w-5xl">
     <div class="md:flex">
 
@@ -33,16 +32,32 @@ $title = "Le blog de l'AVBN"; ?>
                         <tbody>
                             <?php
                             foreach ($users as $user) {
+
                                 if ($user->role != 'super-admin') {
                             ?>
                                     <tr class="border-b dark:border-indigo-700">
-                                        <td class="whitespace-nowrap px-0.5 py-4 font-medium"><input readonly True id="id" name="id" value="<?= $_GET['id']; ?>"></td>
-                                        <td class="whitespace-nowrap px-0.5 py-4"><input type="text" id="username" name="username" value="<?= $user->username ?>"></td>
-                                        <td class="whitespace-nowrap px-0.5 py-4"><input type="text" id="password" name="password" value="<?= $user->password ?>"></td>
-                                        <td class="whitespace-nowrap px-0.5 py-4"><input type="text" id="name" name="name" value="<?= $user->name ?>"></td>
-                                        <td class="whitespace-nowrap px-0.5 py-4"><input type="text" id="firstname" name="firstname" value="<?= $user->firstname ?>"></td>
-                                        <td class="whitespace-nowrap px-0.5 py-4"><input type="list" id="role" name="role" value="<?= $user->role ?>"></td>
-                                        <td class="whitespace-nowrap px-0.5 py-4"><button type="submit" class="text-gray-900 bg-white border border-gray-300 hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm px-5 py-1 mr-3 dark:bg-white dark:text-black dark:border-gray-600 dark:hover:bg-gray-100">edit</button></td>
+                                        <td class="whitespace-nowrap px-0.5 py-4 font-medium"><input readonly True id="id" name="id" class="border-b border-indigo-700 text-gray-200 sm:text-sm block w-full p-2.5  dark:border-indigo-700 dark:text-black" value="<?= $_GET['id']; ?>"></td>
+                                        <td class="whitespace-nowrap px-0.5 py-4"><input type="text" id="username" name="username" class="border-b border-indigo-700 text-gray-200 sm:text-sm block w-full p-2.5  dark:border-indigo-700 dark:text-black" value="<?= $user->username ?>"></td>
+                                        <td class="whitespace-nowrap px-0.5 py-4"><input type="text" id="password" name="password" class="border-b border-indigo-700 text-gray-200 sm:text-sm block w-full p-2.5  dark:border-indigo-700 dark:text-black" value="<?= $user->password ?>"></td>
+                                        <td class="whitespace-nowrap px-0.5 py-4"><input type="text" id="name" name="name" class="border-b border-indigo-700 text-gray-200 sm:text-sm block w-full p-2.5  dark:border-indigo-700 dark:text-black" value="<?= $user->name ?>"></td>
+                                        <td class="whitespace-nowrap px-0.5 py-4"><input type="text" id="firstname" name="firstname" class="border-b border-indigo-700 text-gray-200 sm:text-sm block w-full p-2.5  dark:border-indigo-700 dark:text-black" value="<?= $user->firstname ?>"></td>
+                                        <td class="whitespace-nowrap px-0.5 py-4">
+                                            <select id="role" name="role" class="border-b border-indigo-700 text-gray-200 sm:text-sm block p-2.5 dark:border-indigo-700 dark:text-black">
+                                                <option value="user" <?php if ($user->role == 'user') {
+                                                                            echo 'selected';
+                                                                        } ?>>User</option>
+                                                <option value="admin" <?php if ($user->role == 'admin') {
+                                                                            echo 'selected';
+                                                                        } ?>>Admin</option>
+                                            </select>
+                                        </td>
+                                        <td class="whitespace-nowrap px-0.5 py-4">
+                                            <button type="submit" class="">
+                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487zm0 0L19.5 7.125" />
+                                                </svg>
+                                            </button>
+                                        </td>
                                     </tr>
                             <?php
                                 }

@@ -13,6 +13,7 @@ class RegisterInfo
     public string $password;
     public string $name;
     public string $firstname;
+    public string $role;
 }
 
 class RegisterRepository
@@ -27,6 +28,16 @@ class RegisterRepository
             'INSERT INTO logins(username, password, name, firstname) VALUES(?, ?, ?, ?)'
         );
         $affectedLines = $statement->execute([$username, $password, $name, $firstname]);
+
+        return ($affectedLines > 0);
+    }
+
+    public function registergest(string $username, string $password, string $name, string $firstname, string $role)
+    {
+        $statement = $this->connection->getConnection()->prepare(
+            'INSERT INTO logins(username, password, name, firstname, role) VALUES(?, ?, ?, ?, ?)'
+        );
+        $affectedLines = $statement->execute([$username, $password, $name, $firstname, $role]);
 
         return ($affectedLines > 0);
     }

@@ -15,6 +15,11 @@ class Register
         require('./templates/register.php');
     }
 
+    public function executegest()
+    {
+        require('index.php?action=gest_user');
+    }
+
     public function register($username, $password, $name, $firstname)
     {
         if ($username != '' && $password != '') {
@@ -27,6 +32,21 @@ class Register
             header('Location: index.php');
         } else {
             require('./templates/error.php');
+        }
+    }
+
+    public function registergest($username, $password, $name, $firstname, $role)
+    {
+        if ($username != '' && $password != '') {
+            $connection = new DatabaseConnection();
+
+            $userRepository = new RegisterRepository();
+            $userRepository->connection = $connection;
+            $post = $userRepository->registergest($username, $password, $name, $firstname, $role);
+
+            header('Location: index.php?action=gest_user');
+        } else {
+            require('./templates/gest_user.php');
         }
     }
 }

@@ -1,5 +1,5 @@
 <?php
-$title = "Le blog de l'AVBN"; ?>
+$title = "Le blog de GAP"; ?>
 
 <?php ob_start();
 
@@ -24,7 +24,7 @@ if ($_SESSION['modeComment'] == 'edit') {
                             <label for="comment" class="block mb-2 text-sm font-medium text-gray-900 dark:text-black">Commentaire</label>
                             <input type="text" name="comment" id="comment" class="bg-gray-50 border border-gray-300 text-gray-200 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-300 dark:border-gray-200 dark:placeholder-gray-700 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Votre Commentaire" required="" value="<?= $_GET['comment'] ?>">
                         </div>
-                        <button type="submit" class="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">Créer le Commentaire</button>
+                        <button type="submit" class="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">Modifier le Commentaire</button>
                     </form>
                 </div>
             </div>

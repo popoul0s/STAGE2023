@@ -14,6 +14,7 @@ class LoginInfo
     public string $name;
     public string $firstname;
     public string $role;
+    public string $info;
 }
 
 class UserRepository
@@ -25,7 +26,7 @@ class UserRepository
     public function login($username, $password)
     {
         $statement = $this->connection->getConnection()->prepare(
-            'SELECT id, username, password, name, firstname, role from logins where username=? AND password=?'
+            'SELECT id, username, password, name, firstname, role, info_plus from logins where username=? AND password=?'
         );
         $statement->execute([$username, $password]);
         $login = $statement->fetch();
@@ -49,7 +50,7 @@ class UserRepository
     public function getLoginUser(): array
     {
         $statement = $this->connection->getConnection()->prepare(
-            "SELECT id, username, password, name, firstname, role FROM logins ORDER BY role DESC"
+            "SELECT id, username, password, name, firstname, role, info_plus FROM logins ORDER BY role DESC"
         );
         $statement->execute();
 
@@ -62,6 +63,7 @@ class UserRepository
             $login->name = $row['name'];
             $login->firstname = $row['firstname'];
             $login->role = $row['role'];
+            $login->info = $row['info_plus'];
 
 
             $logins[] = $login;
@@ -100,7 +102,7 @@ class UserRepository
     public function getLoginUserById($id, $role): array
     {
         $statement = $this->connection->getConnection()->prepare(
-            "SELECT id, username, password, name, firstname, role FROM logins WHERE id=? AND role=?"
+            "SELECT id, username, password, name, firstname, role, info_plus FROM logins WHERE id=? AND role=?"
         );
         $statement->execute([$id, $role]);
 
@@ -113,6 +115,7 @@ class UserRepository
             $login->name = $row['name'];
             $login->firstname = $row['firstname'];
             $login->role = $row['role'];
+            $login->info = $row['info_plus'];
 
 
             $logins[] = $login;
@@ -129,6 +132,15 @@ class UserRepository
             'UPDATE logins SET username=?, password=?, name=?, firstname=?, role=?  WHERE id=?'
         );
         $affectedLines = $statement->execute(["$username", "$password", "$name", "$firstname", "$role", $id]);
+
+        return ($affectedLines > 0);
+    }
+    public function delUser(string $id): bool
+    {
+        $statement = $this->connection->getConnection()->prepare(
+            'DELETE FROM logins WHERE id=?'
+        );
+        $affectedLines = $statement->execute([$id]);
 
         return ($affectedLines > 0);
     }

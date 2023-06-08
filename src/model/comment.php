@@ -4,9 +4,11 @@ namespace Application\Model\Comment;
 
 require_once('src/lib/database.php');
 require_once('src/model/login.php');
+require_once('src/model/profile.php');
 
 use Application\Lib\Database\DatabaseConnection;
 use Application\Model\Login\UserRepository;
+use Application\Model\Profile\ProfileRepository;
 
 class Comment
 {
@@ -15,6 +17,7 @@ class Comment
     public string $frenchCreationDate;
     public string $comment;
     public string $id;
+    public string $bio;
 }
 
 class CommentRepository
@@ -33,14 +36,30 @@ class CommentRepository
             $userRepository = new UserRepository();
             $userRepository->connection = new DatabaseConnection();
             $author = $userRepository->getLoginWithId($row['author']);
-            $comment = new Comment();
-            $comment->id_author = $row['author'];
-            $comment->author = ucfirst($author['name']) . ' ' . ucfirst($author['firstname']);
-            $comment->frenchCreationDate = $row['french_creation_date'];
-            $comment->comment = $row['comment'];
-            $comment->id = $row['id'];
-
-            $comments[] = $comment;
+            $profileRepository = new ProfileRepository();
+            $profileRepository->connection = new DatabaseConnection();
+            if(!empty($profileRepository->getprofilebyID($row['author']))){
+                $bio = $profileRepository->getprofilebyID($row['author']);
+                $comment = new Comment();
+                $comment->id_author = $row['author'];
+                $comment->author = ucfirst($author['name']) . ' ' . ucfirst($author['firstname']);
+                $comment->frenchCreationDate = $row['french_creation_date'];
+                $comment->comment = $row['comment'];
+                $comment->id = $row['id'];
+                $comment->bio = $bio['bio'];
+    
+                $comments[] = $comment;
+            } else {
+                $comment = new Comment();
+                $comment->id_author = $row['author'];
+                $comment->author = ucfirst($author['name']) . ' ' . ucfirst($author['firstname']);
+                $comment->frenchCreationDate = $row['french_creation_date'];
+                $comment->comment = $row['comment'];
+                $comment->id = $row['id'];
+                $comment->bio = '';
+    
+                $comments[] = $comment;
+            }
         }
 
         return $comments;
@@ -72,6 +91,15 @@ class CommentRepository
             'DELETE FROM comments WHERE post_id=? AND id=?'
         );
         $affectedLines = $statement->execute([$post, $id_comment]);
+
+        return ($affectedLines > 0);
+    }
+    public function delCommentAll(string $post): bool
+    {
+        $statement = $this->connection->getConnection()->prepare(
+            'DELETE FROM comments WHERE post_id=?'
+        );
+        $affectedLines = $statement->execute([$post]);
 
         return ($affectedLines > 0);
     }

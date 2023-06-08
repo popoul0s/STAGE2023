@@ -1,4 +1,4 @@
-<?php $title = "Le blog de l'AVBN"; ?>
+<?php $title = "Le blog de GAP"; ?>
 
 <?php ob_start(); ?>
 <p>Une erreur est survenue :</p>

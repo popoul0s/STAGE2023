@@ -53,4 +53,33 @@ class PostRepository
 
         return $posts;
     }
+    public function createPost(string $title, string $content): bool
+    {
+        $statement = $this->connection->getConnection()->prepare(
+            'INSERT INTO posts(title, content, creation_date) VALUES(?, ?, NOW())'
+        );
+        $affectedLines = $statement->execute([$title, $content]);
+
+        return ($affectedLines > 0);
+    }
+
+    public function editPost(string $id, string $title, string $content): bool
+    {
+        $statement = $this->connection->getConnection()->prepare(
+            'UPDATE posts SET title=?, content=? ,creation_date=NOW() WHERE id=?'
+        );
+        $affectedLines = $statement->execute(["$title", "$content", $id]);
+
+        return ($affectedLines > 0);
+    }
+
+    public function delPost(string $post): bool
+    {
+        $statement = $this->connection->getConnection()->prepare(
+            'DELETE FROM posts WHERE id=?'
+        );
+        $affectedLines = $statement->execute([$post]);
+
+        return ($affectedLines > 0);
+    }
 }
