@@ -3,26 +3,16 @@ session_start();
 require_once('src/controllers/edit_user.php');
 require_once('src/controllers/gest_user.php');
 require_once('src/controllers/register.php');
-require_once('src/controllers/del_comment.php');
-require_once('src/controllers/edit_comment.php');
-require_once('src/controllers/add_comment.php');
+require_once('src/controllers/comment.php');
 require_once('src/controllers/homepage.php');
 require_once('src/controllers/post.php');
 require_once('src/controllers/login.php');
-require_once('src/controllers/add_post.php');
-require_once('src/controllers/edit_post.php');
-require_once('src/controllers/del_post.php');
 require_once('src/controllers/profile.php');
 
-use Application\Controllers\DelPost\DelPost;
-use Application\Controllers\EditPost\EditPost;
-use Application\Controllers\AddPost\AddPost;
 use Application\Controllers\EditUser\EditUser;
 use Application\Controllers\GestUser\GestUser;
 use Application\Controllers\Register\Register;
-use Application\Controllers\DelComment\DelComment;
-use Application\Controllers\EditComment\EditComment;
-use Application\Controllers\AddComment\AddComment;
+use Application\Controllers\Comment\Comment;
 use Application\Controllers\Homepage\Homepage;
 use Application\Controllers\Post\Post;
 use Application\Controllers\Login\Login;
@@ -37,58 +27,58 @@ try {
             if (isset($_GET['id']) && $_GET['id'] > 0) {
                $identifier = $_GET['id'];
 
-               (new Post())->execute($identifier);
+               (new Post())->SelectPostExecute($identifier);
             } else {
                throw new Exception('Aucun identifiant de billet envoyé');
             }
             break;
 
          case 'addPost':
-               (new AddPost())->execute($_POST['title'], $_POST['content']);
+            (new Post())->AddPostExecute($_POST['title'], $_POST['content']);
             break;
          case 'editPostredirection':
-            (new EditPost())->editredirection($_GET['id']); 
+            (new Post())->editredirection($_GET['id']);
             break;
          case 'editPost':
-            (new EditPost())->execute($_GET['id'], $_POST['title'], $_POST['content']);
+            (new Post())->EditPostExecute($_GET['id'], $_POST['title'], $_POST['content']);
             break;
 
          case 'delPost':
-            (new DelPost())->execute($_GET['id']);
+            (new Post())->DelPostExecute($_GET['id']);
             break;
-         
+
          case 'addComment':
             if (isset($_GET['id']) && $_GET['id'] > 0) {
                $identifier = $_GET['id'];
 
-               (new AddComment())->execute($identifier, $_SESSION['id_user_verif'], $_POST);
+               (new Comment())->AddCommentExecute($identifier, $_SESSION['id_user_verif'], $_POST);
             } else {
                throw new Exception('Aucun identifiant de billet envoyé');
             }
             break;
 
          case 'editredirection';
-            (new EditComment())->editredirection();
+            (new Comment())->editredirection();
             break;
          case 'editComment':
             if (isset($_GET['id']) && $_GET['id'] > 0) {
                $identifier = $_GET['id'];
 
-               (new EditComment())->execute($identifier, $_SESSION['id_user_verif'], $_POST);
+               (new Comment())->EditCommentExecute($identifier, $_SESSION['id_user_verif'], $_POST);
             } else {
                throw new Exception('Aucun identifiant de billet envoyé');
             }
             break;
 
          case 'delredirection':
-            (new DelComment())->delredirection();
+            (new Comment())->delredirection();
             break;
          case 'delComment':
             if (isset($_GET['id']) && $_GET['id'] > 0) {
                $identifier = $_GET['id'];
                $id_comment = $_GET['id_comment'];
 
-               (new DelComment())->execute($identifier, $id_comment);
+               (new Comment())->DelCommentExecute($identifier, $id_comment);
             } else {
                throw new Exception('Aucun identifiant de billet envoyé');
             }
@@ -98,9 +88,16 @@ try {
             if (isset($_POST['user']) && isset($_POST['pw']) && isset($_POST['name']) && isset($_POST['firstname'])) {
                $login = (new Register());
                $login->register($_POST['user'], $_POST['pw'], $_POST['name'], $_POST['firstname']);
-               var_dump($_FILES['pp']); 
+               var_dump($_FILES['pp']);
             } else {
                (new Register())->execute();
+            }
+            break;
+         case 'registergest':
+            if (isset($_POST['user']) && isset($_POST['pw']) && isset($_POST['name']) && isset($_POST['firstname']) && isset($_POST['role'])) {
+               (new Register())->registergest($_POST['user'], $_POST['pw'], $_POST['name'], $_POST['firstname'], $_POST['role']);
+            } else {
+               (new Register())->executegest();
             }
             break;
          case 'pageregister':
@@ -124,6 +121,9 @@ try {
             header('Location:index.php');
             break;
 
+         case 'dellogin':
+            (new Login())->dellogin($_GET['id_user']);
+            break;
          case 'gest_user':
             (new GestUser())->execute();
             break;
