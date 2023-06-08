@@ -23,7 +23,7 @@ SVG LOGO DECONNEXION :
         <div class="max-w-md mx-auto mb-2 bg-white rounded-xl shadow-2xl overflow-hidden md:max-w-5xl">
             <div class="py-8">
                 <?php foreach ($profiles as $profile) { ?>
-                    <form action="index.php?action=editprofile&id_user=<?= $_GET['id_user'] ?>" method="post">
+                    <form action="index.php?action=editprofile&id_user=<?= $_GET['id_user'] ?>" method="post" enctype="multipart/form-data">
                         <div class="flex flex-col ml-12">
                             <div class="flex flex-row pb-8">
                                 <div class="basis-2/7 ml-12 mr-2">
@@ -36,27 +36,27 @@ SVG LOGO DECONNEXION :
                                 </div>
                                 <div class="basis-3/7">
                                     <label for="number" class="font-bold">☎️ Numéro de Téléphone :</label>
-                                    <input class="border-b w-32" type="tel" name="number" id="number" value="<?= $profile->tel ?>">
+                                    <input class="border-b w-32" type="tel" name="number" required pattern="0[6-7][0-9]{8}$" maxlength="10" id="number" value="<?= $profile->tel ?>">
                                 </div>
                             </div>
                             <div class="flex flex-row pb-8">
                                 <div class="basis-2/5 ml-12 mr-24">
                                     <label for="ville" class="font-bold">📍 Ville :</label>
-                                    <input class="border-b w-72" type="text" name="ville" id="ville" value="<?= $profile->ville ?>">
+                                    <input class="border-b w-72" type="text" name="ville" required pattern="^[a-zA-Z]+|[a-zA-Z]+\s[a-zA-Z]+$" id="ville" value="<?= $profile->ville ?>">
                                 </div>
                                 <div class="basis-2/5">
                                     <label for="code_postal" class="font-bold">📌 Code Postal :</label>
-                                    <input class="border-b w-52" type="text" name="code_postal" id="code_postal" value="<?= $profile->code_postal ?>">
+                                    <input class="border-b w-52" type="text" name="code_postal" required pattern="[0-9]{5}$" maxlength="5" id="code_postal" value="<?= $profile->code_postal ?>">
                                 </div>
                             </div>
                             <div class="flex flex-row pb-8">
                                 <div class="basis-2/5 ml-12 mr-24">
                                     <label for="adresse" class="font-bold">🔑 Adresse :</label>
-                                    <input class="border-b w-64" type="text" name="adresse" id="adresse" value="<?= $profile->adresse ?>">
+                                    <input class="border-b w-64" type="text" name="adresse" required id="adresse" value="<?= $profile->adresse ?>">
                                 </div>
                                 <div class="basis-2/5">
                                     <label for="mail" class="font-bold">✉️ Mail :</label>
-                                    <input class="border-b w-64" type="email" name="mail" id="mail" value="<?= $profile->mail ?>">
+                                    <input class="border-b w-64" type="email" name="mail" id="mail" required pattern=".+(.com|.fr)$" value="<?= $profile->mail ?>">
                                 </div>
                             </div>
                             <div class="flex flex-row pb-4">
@@ -66,7 +66,7 @@ SVG LOGO DECONNEXION :
                             </div>
                             <div class="flex flex-row pb-4">
                                 <div class="basis-3/6 ml-12">
-                                    <textarea name="bio" id="bio" cols="60" rows="3" class="border-l border-t"><?= $profile->bio ?></textarea>
+                                    <textarea name="bio" id="bio" required cols="60" rows="3" class="border-l border-t"><?= $profile->bio ?></textarea>
                                 </div>
                                 <div class="basis-1/10 ml-28">
                                     <button type="submit" onMouseOver="displayDivInfo('Confirmer la modification');" onMouseOut="displayDivInfo()">
@@ -75,6 +75,46 @@ SVG LOGO DECONNEXION :
                                             <path stroke-linecap="round" stroke-linejoin="round" d="M12.75 15l3-3m0 0l-3-3m3 3h-7.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                                         </svg>
                                     </button>
+                                </div>
+                            </div>
+                            <div class="flex flex-row pb-4">
+                                <div class="basis-3/5 flex flex-row pb-4">
+                                    <div class="basis-2/5">
+
+                                        <div x-data="{photoName: null, photoPreview: null}" class="basis-3/5">
+                                            <!-- Photo File Input -->
+                                            <input type="file" name="fileToUpload" id="fileToUpload" class="hidden" x-ref="photo" x-on:change="
+                                                                                            photoName = $refs.photo.files[0].name;
+                                                                                            const reader = new FileReader();
+                                                                                            reader.onload = (e) => {
+                                                                                                photoPreview = e.target.result;
+                                                                                            };
+                                                                                            reader.readAsDataURL($refs.photo.files[0]);
+                                                                                            ">
+
+                                            <label class="block text-gray-700 text-sm font-bold mb-2 text-center" for="photo">
+                                                Photo de Profile <span class="text-red-600"> </span>
+                                            </label>
+
+                                            <div class="text-center">
+                                                <!-- Current Profile Photo -->
+                                                <div class="mt-2" x-show="! photoPreview">
+                                                    <img src="<?php if(file_exists('uploads/profilepicture_' . $_SESSION['id_user_verif'] . '.png')) {?>uploads/profilepicture_<?= $_SESSION['id_user_verif']?>.png <?php } else { ?> uploads/default.png <?php } ?>" class="w-20 h-20 m-auto rounded-full shadow">
+                                                </div>
+                                                <!-- New Profile Photo Preview -->
+                                                <div class="mt-2" x-show="photoPreview" style="display: none;">
+                                                    <span class="block w-20 h-20 rounded-full m-auto shadow" x-bind:style="'background-size: cover; background-repeat: no-repeat; background-position: center center; background-image: url(\'' + photoPreview + '\');'" style="background-size: cover; background-repeat: no-repeat; background-position: center center; background-image: url('null');">
+                                                    </span>
+                                                </div>
+                                            </div>
+
+                                            <button type="button" class="inline-flex items-center ml-12 px-4 py-2 bg-white border border-gray-300 rounded-md font-semibold text-xs text-gray-700 uppercase tracking-widest shadow-sm hover:text-gray-500 focus:outline-none focus:border-blue-400 focus:shadow-outline-blue active:text-gray-800 active:bg-gray-50 transition ease-in-out duration-150 mt-2" x-on:click.prevent="$refs.photo.click()">
+                                                Change Photo
+                                            </button>
+                                            <p class="text-red-600"><?= @$errorImage ?></p>
+                                        </div>
+                                    </div>
+
                                 </div>
                             </div>
                         </div>

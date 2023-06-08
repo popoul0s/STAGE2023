@@ -14,15 +14,7 @@ class LoginInfo
     public string $name;
     public string $firstname;
     public string $role;
-    public string $adresse;
-    public string $ville;
-    public string $code_postal;
-    public string $metier;
-    public string $tel;
-    public string $mail;
-    public string $insta;
-    public string $facebook;
-    public string $twitter;
+    public string $info;
 }
 
 class UserRepository
@@ -34,7 +26,7 @@ class UserRepository
     public function login($username, $password)
     {
         $statement = $this->connection->getConnection()->prepare(
-            'SELECT id, username, password, name, firstname, role, adresse, ville, code_postal, metier, tel, mail, insta, facebook, twitter from login where username=? AND password=?'
+            'SELECT id, username, password, name, firstname, role, info_plus from logins where username=? AND password=?'
         );
         $statement->execute([$username, $password]);
         $login = $statement->fetch();
@@ -46,7 +38,7 @@ class UserRepository
     public function getLoginWithId($id)
     {
         $statement = $this->connection->getConnection()->prepare(
-            'SELECT name, firstname, adresse, ville, code_postal, metier, tel, mail, insta, facebook, twitter FROM logins WHERE id=?'
+            'SELECT name, firstname FROM logins WHERE id=?'
         );
         $statement->execute([$id]);
         $loginWithId = $statement->fetch();
@@ -58,7 +50,7 @@ class UserRepository
     public function getLoginUser(): array
     {
         $statement = $this->connection->getConnection()->prepare(
-            "SELECT id, username, password, name, firstname, role, adresse, ville, code_postal, metier, tel, mail, insta, facebook, twitter FROM logins ORDER BY role DESC"
+            "SELECT id, username, password, name, firstname, role, info_plus FROM logins ORDER BY role DESC"
         );
         $statement->execute();
 
@@ -71,15 +63,7 @@ class UserRepository
             $login->name = $row['name'];
             $login->firstname = $row['firstname'];
             $login->role = $row['role'];
-            $login->adresse = $row['adresse'];
-            $login->ville = $row['ville'];
-            $login->code_postal = $row['code_postal'];
-            $login->metier = $row['metier'];
-            $login->tel = $row['tel'];
-            $login->mail = $row['mail'];
-            $login->insta = $row['insta'];
-            $login->facebook = $row['facebook'];
-            $login->twitter = $row['twitter'];
+            $login->info = $row['info_plus'];
 
 
             $logins[] = $login;
@@ -87,6 +71,33 @@ class UserRepository
 
         return $logins;
     }
+    /*
+// User possédant le role admin
+
+    public function getLoginAdmin(): array
+    {
+        $statement = $this->connection->getConnection()->prepare(
+            "SELECT id, username, password, name, firstname, role FROM logins WHERE role='admin'"
+        );
+        $statement->execute();
+
+        $login = [];
+        while (($row = $statement->fetch())) {
+            $login = new LoginInfo();
+            $login->id_user = $row['id'];
+            $login->username = $row['username'];
+            $login->password = $row['password'];
+            $login->name = $row['name'];
+            $login->firstname = $row['firstname'];
+            $login->role = $row['role'];
+
+
+            $logins[] = $login;
+        }
+
+        return $logins;
+    }
+*/
 
     public function getLoginUserById($id, $role): array
     {
@@ -104,15 +115,7 @@ class UserRepository
             $login->name = $row['name'];
             $login->firstname = $row['firstname'];
             $login->role = $row['role'];
-            $login->adresse = $row['adresse'];
-            $login->ville = $row['ville'];
-            $login->code_postal = $row['code_postal'];
-            $login->metier = $row['metier'];
-            $login->tel = $row['tel'];
-            $login->mail = $row['mail'];
-            $login->insta = $row['insta'];
-            $login->facebook = $row['facebook'];
-            $login->twitter = $row['twitter'];
+            $login->info = $row['info_plus'];
 
 
             $logins[] = $login;
@@ -132,7 +135,6 @@ class UserRepository
 
         return ($affectedLines > 0);
     }
-    
     public function delUser(string $id): bool
     {
         $statement = $this->connection->getConnection()->prepare(

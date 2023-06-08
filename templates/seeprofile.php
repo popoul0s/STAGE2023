@@ -88,22 +88,30 @@ SVG LOGO DECONNEXION :
                                     </svg>
                                 </a>
                             </div>
-                            <!--<div class="basis-1/5">
-                                <a href="index.php?action=un_login" class="text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800">Se Déconnecter</a>
-                            </div>
-                            <div>
-                                <a href="index.php?action=editprofile" class="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-green-800">Modifier</a>
-                            </div>
                         </div>
                         <div class="flex flex-row pb-4">
-                            <div class="basis-3/5">
+                            <div class="basis-3/5 flex flex-row pb-4">
+                                <div class="basis-2/5">
+
+                                    <div x-data="{photoName: null, photoPreview: null}" class="basis-3/5">
+                                        <label class="block text-gray-700 text-sm font-bold mb-2 text-center" for="photo">
+                                            Photo de Profile  <span class="text-red-600"> </span>
+                                        </label>
+
+                                        <div class="text-center">
+                                            <!-- Current Profile Photo -->
+                                            <div class="mt-2" x-show="! photoPreview">
+                                                <img src="<?php if(file_exists('uploads/profilepicture_' . $_SESSION['id_user_verif'] . '.png')) {?>uploads/profilepicture_<?= $_SESSION['id_user_verif']?>.png <?php } else { ?> uploads/default.png <?php } ?>" class="w-20 h-20 m-auto rounded-full shadow">
+                                            </div>
+                                        </div>
+                                        <p class="text-red-600"><?= @$errorImage ?></p>
+                                    </div>
+                                </div>
+
                             </div>
-                            <div class="basis-2/5">
-                                <a href="index.php?action=delprofile&id_user=<?= $_GET['id_user'] ?>" class="text-black bg-red-600 hover:bg-red-600 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:bg-red-600 dark:hover:bg-red-700 focus:outline-none dark:focus:ring-red-600">Supprimer</a>
-                            </div>
-                        </div> -->
                         </div>
                     <?php } ?>
+
                     </div>
             </div>
         <?php } elseif (@$_SESSION['info_validate']) { ?>

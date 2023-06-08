@@ -6,6 +6,12 @@
     <title>Le super blog de GAP !</title>
     <link href="./dist/style.css" rel="stylesheet" />
     <script type="text/javascript" src="./js.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.8.0/dist/alpine.min.js" defer></script>
+
+    <script src="https://cdn.jsdelivr.net/gh/alpine-collective/alpine-magic-helpers@0.3.x/dist/index.js"></script>
+
+
 </head>
 
 <body>
@@ -22,10 +28,19 @@
 
                         <?php if ($_SESSION['info'] == 1 || @$_SESSION['info_validate'] == true) { ?>
                             <a href="index.php?action=seeprofile&id_user=<?= $_SESSION['id_user_verif'] ?>" class="text-gray-800 dark:text-white hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800">
-                                <!-- FUTUR PHOTO DE PROFILE         -->
-                                <!-- <img class="w-10 h-10 rounded-full" src="./img/1536784688.svg" alt="Rounded avatar"> -->
+                                <div class="flex flex-row">
+                                    <div class="basis-1/9">
 
-                                <?= ucfirst($_SESSION['name']) . ' ' . ucfirst($_SESSION['firstname']) ?>
+                                        <img class="w-7 h-7 rounded-full" src="<?php if(file_exists('uploads/profilepicture_' . $_SESSION['id_user_verif'] . '.png')) {?>uploads/profilepicture_<?= $_SESSION['id_user_verif']?>.png <?php } else { ?> uploads/default.png <?php } ?>" alt="Rounded avatar">
+                                    </div>
+                                    <div class="basis-1/9 mt-1">
+                                        <?= ucfirst($_SESSION['name']) . ' ' . ucfirst($_SESSION['firstname']) ?>
+                                    </div>
+                                </div>
+                                
+
+                                
+
                             </a>
                         <?php } elseif ($_SESSION['info'] == 0) { ?>
                             <a href="index.php?action=profileredirection"><button data-tooltip-target="tooltip-profile" type="button" class="inline-flex text-white underline font-medium text-sm flex-col items-center justify-center px-5 rounded-r-full hover:bg-gray-50 dark:hover:bg-gray-800 group">
